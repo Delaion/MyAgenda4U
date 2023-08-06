@@ -12,7 +12,40 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			Contacts: [
+				{
+					img:"Avatar_url",
+					title:"FullName",
+					adress:"Carrer de la mala vida,69",
+					phone:"645225235",
+					email:"pericodelospalotes@gmail.com"
+
+
+				},
+			],
+			ContactList: [
+				{
+					img:"Avatar_url",
+					title:"FullName",
+					adress:"Carrer de la mala vida,69",
+					phone:"645225235",
+					email:"pericodelospalotes@gmail.com"
+
+
+				},
+			],
+			ContactCard: [
+				{
+					img:"Avatar_url",
+					title:"FullName",
+					adress:"Carrer de la mala vida,69",
+					phone:"645225235",
+					email:"pericodelospalotes@gmail.com"
+
+
+				},
+			],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -37,9 +70,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
+			},
+			addContact(contact){
+                 const store=getStore();
+				 const contacts=store.contacts.concat(contact);
+				 //Resset the store
+				 setStore({contacts:contacts});
+			},
+			deleteContact(index){
+				const store=getStore();
+				const contacts=store.contacts.filter((c,i)=>{
+					return index !==i
+				});
+				//Resset the store
+		    	setStore({contacts:contacts});
+		    },
+			handleEditContact(index){
+				const store=getStore();
+				setEditingContact(index);
+				//Resset the store
+		    	setStore({contacts:contacts});
 			}
-		}
-	};
+	},
 };
-
+}
 export default getState;
