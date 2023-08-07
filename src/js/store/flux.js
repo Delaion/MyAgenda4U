@@ -1,4 +1,4 @@
-import { ContactList } from "../views/contacts";
+
 
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
@@ -16,16 +16,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 		
-			ContactList: [
-				{
-					img:"Avatar_url",
-					title:"FullName",
-					adress:"Carrer de la mala vida,69",
-					phone:"645225235",
-					email:"pericodelospalotes@gmail.com"
-
-
-				},
+			contactList: [
+				
 			],
 		
 		},
@@ -34,10 +26,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+			loadSomeData: () => {	
+				fetch("https://jsonplaceholder.typicode.com/users/")
+				.then(response=>response.json())
+				.then(data => setStore({ contactList: data}))	
 			},
 			changeColor: (index, color) => {
 				//get the store
@@ -53,26 +45,20 @@ const getState = ({ getStore, getActions, setStore }) => {
 				//reset the global store
 				setStore({ demo: demo });
 			},
-			addContact(contact){
+			addContact:(contact)=>{
                  const store=getStore();
-				 const ContactList=store.ContactList.concat(contact);
+				 const contactList=store.contactList.concat(contact);
 				 //Resset the store
-				 setStore({ContactList:ContactList});
+				 setStore({contactList:contactList});
 			},
-			deleteContact(index){
+		    deleteContact:(index)=>{
 				const store=getStore();
-				const ContactList=store.ContactList.filter((c,i)=>{
+				const contactList=store.contactList.filter((c,i)=>{
 					return index !==i
 				});
 				//Resset the store
-		    	setStore({ContactList:ContactList});
+		    	setStore({contactList:contactList});
 		    },
-			handleEditContact(index){
-				const store=getStore();
-				setEditingContact(index);
-				//Resset the store
-		    	setStore({ContactList:ContactList});
-			}
 	},
 };
 }

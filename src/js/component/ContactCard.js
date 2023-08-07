@@ -1,8 +1,9 @@
 import React ,{useState,useEffect,useContext}from "react";
 import { Context } from "../store/appContext";
 
-export const Contactcard=()=>{
+export const ContactCard=()=>{
     const {store, actions}=useContext(Context);
+    return
 ( <div className="card mb-3 bg-dark" style="max-width: 540px;">
     <h1>Your Contact.</h1>
    <div className="row g-0 bg-dark text-light">
