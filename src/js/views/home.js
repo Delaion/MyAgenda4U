@@ -1,6 +1,8 @@
 import React from "react";
 import rigoImage from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
+import { Context } from "../store/appContext";
+import { ContactList } from "./views/contacts.js";
 
 export const Home = () => (
 	<div className="text-center mt-5">

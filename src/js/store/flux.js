@@ -1,3 +1,5 @@
+import { ContactList } from "../views/contacts";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
@@ -13,17 +15,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			Contacts: [
-				{
-					img:"Avatar_url",
-					title:"FullName",
-					adress:"Carrer de la mala vida,69",
-					phone:"645225235",
-					email:"pericodelospalotes@gmail.com"
-
-
-				},
-			],
+		
 			ContactList: [
 				{
 					img:"Avatar_url",
@@ -35,17 +27,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				},
 			],
-			ContactCard: [
-				{
-					img:"Avatar_url",
-					title:"FullName",
-					adress:"Carrer de la mala vida,69",
-					phone:"645225235",
-					email:"pericodelospalotes@gmail.com"
-
-
-				},
-			],
+		
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -73,23 +55,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 			addContact(contact){
                  const store=getStore();
-				 const contacts=store.contacts.concat(contact);
+				 const ContactList=store.ContactList.concat(contact);
 				 //Resset the store
-				 setStore({contacts:contacts});
+				 setStore({ContactList:ContactList});
 			},
 			deleteContact(index){
 				const store=getStore();
-				const contacts=store.contacts.filter((c,i)=>{
+				const ContactList=store.ContactList.filter((c,i)=>{
 					return index !==i
 				});
 				//Resset the store
-		    	setStore({contacts:contacts});
+		    	setStore({ContactList:ContactList});
 		    },
 			handleEditContact(index){
 				const store=getStore();
 				setEditingContact(index);
 				//Resset the store
-		    	setStore({contacts:contacts});
+		    	setStore({ContactList:ContactList});
 			}
 	},
 };
