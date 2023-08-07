@@ -7,6 +7,7 @@ export const Contactcard=()=>{
     <h1>Your Contact.</h1>
    <div className="row g-0 bg-dark text-light">
       <div className="col-md-4">
+        <button className="btn btn-outline-primary float-end"onClick={()=>{actions.handleEdditContact(index)}}><i class="fa-solid fa-pen-fancy"></i></button>
         <img src="..." className="img-fluid rounded-start" alt="..."/>
            {store.img}
       </div>
