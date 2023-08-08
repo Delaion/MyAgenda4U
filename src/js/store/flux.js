@@ -18,7 +18,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 		
 			contactList: [
 				
-			],
+			             ],
+			contact:[
+
+			        ]
 		
 		},
 		actions: {
@@ -51,6 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				 //Resset the store
 				 setStore({contactList:contactList});
 			},
+		
 		    deleteContact:(index)=>{
 				const store=getStore();
 				const contactList=store.contactList.filter((c,i)=>{
