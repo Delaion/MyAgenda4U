@@ -1,67 +1,84 @@
-import React ,{useState,useEffect,useContext}from "react";
-import { Context } from "../store/appContext";
-import { Link,useParams } from "react-router-dom";
+import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { Context } from '../store/appContext';
 
-export const addContact=()=>{
-  const {store,actions} = useContext(Context)
-	const params = useParams();
 
-  function submitForm(e){
+export const AddContact = () => {
 
-		console.log(e);
-		e.preventDefault()
-		let dataForm = new FormData(e.target)
-		let data = {}
-		let inputs= ["img","FirstName","LastName","adress", "phone","email"]
-		inputs.forEach(input => data[input]=dataForm.get(input))
-		data.agenda_slug = "MyAgenda"
-		console.log(data)
-		// actions.addContacts(data)
-		if( !params.id ){
-			actions.addContacts(data)
-		}
-		else{
-			actions.editContacts(data,params.id)
-		}
-	}
+    // Retrieve actions from store
+    const { store, actions } = useContext(Context)
+
+    // Update "contacts" objetcts with new entries
+    const [newContact, setNewContact] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        address: "",
+    })
+
+
+    // Add contact (handle submit)
+    const handleSubmit = (e) => {
+        // Prevent refreshing after submit
+        e.preventDefault();
+        actions.checkFormFields(newContact);
+
+        
+        // Clear input fields after submit
+        setNewContact({
+            name: "",
+            email: "",
+            phone: "",
+            address: "",
+        })
+
+    }
 
     return (
-      <div>
-          <form className="bg-secondary"onSubmit={submitForm}>
-  <div className="mb-3 bg-dark opacity-25">
-    <label for="avatar_URL" className="form-label">Profile Image</label>
-    <input type="url" className="form-control" name="img"/>
-  </div>
-  <div className="mb-3 bg-dark  opacity-25">
-    <label for="FullName" className="form-label">First Name and last name.</label>
-    <div className="input-group mb-3">
-      <input type="text" className="form-control" id="Name" placeholder="Your First Name." name="FirstName"/>
-        <span className="input-group-text"></span>
-      <input type="text" className="form-control" id="Surname" placeholder="Your Last Name" name="LastName"/>
-    </div>
-  </div>
-  <div className="form-control bg-dark opacity-25">
-  <label for="localization" className="form-label">Add your Contact:</label>
-  <div className="data">
-    <i className="fa-solid fa-location-dot"></i>
-    <input type="text"  id="Localization" className="form-control" name="adress"/>
-  </div>
-  <div className="data">
-     <i className="fa-solid fa-mobile-screen-button"></i>
-     <input type="tel" id="telephone" className="form-control" name="phone"/>
-  </div>
-  <div className="data">
-  <i class="fa-solid fa-at"></i>
-  <input type="email" id="emailing" className="form-control" name="email"/>
-  </div>
- </div>
-  <button type="submit" className="btn btn-outline-success">+<i className="fa-solid fa-address-book">Add</i></button>
-</form>
-<Link to="/" className="text-center">
-<button type="submit" className="btn btn-outline-success">
-Contacts<i class="fa-solid fa-address-book"></i>
-</button>
-</Link>
-</div>
-    );
+        <>
+            <div className='container mt-5 mb-1'>
+                 <form onSubmit={handleSubmit}>
+
+                    <div className='mb-3'>
+                        <h2 className='formHeader mt-1'>Add a new contact</h2>
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Full name</label>
+                        <input name="name" type="text" class="form-control" placeholder='Jane Doe' value={newContact.name} onChange={(e) => setNewContact({...newContact, name: e.target.value})} required></input>
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" placeholder='user@email.com' value={newContact.email} onChange={(e) => setNewContact({...newContact, email: e.target.value})} required ></input>
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Phone number</label>
+                        <input name="phone" type="text" class="form-control" placeholder='5555-5555' value={newContact.phone} onChange={(e) => setNewContact({...newContact, phone: e.target.value})} required></input>
+                    </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Address</label>
+                        <input name="address" type="text" class="form-control" placeholder='Street, City, Country.' value={newContact.address} onChange={(e) => setNewContact({...newContact, address: e.target.value}) } required></input>
+                    </div>
+
+                    <Link to="/">
+                        <button type="submit" class="formCancelButton btn">Back to list</button>
+                    </Link>
+
+                    
+                    <button type="submit" class="formAddButton btn">Save contact</button>
+                    
+
+                </form>
+
+
+            </div>
+        </>
+    )
 }
+
+
+
+

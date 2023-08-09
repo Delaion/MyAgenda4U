@@ -13,115 +13,68 @@ const getState = ({ getStore, getActions, setStore }) => {
 					initial: "white"
 				}
 			],
-			contacts: []
+			contacts: [
+				{
+					id: 1,
+					name: "Ana García S.",
+					email: "ana@email.com",
+					phone: "5555-5555",
+					address: "Nosara, Guanacaste"
+				},
+				{
+					id :2,
+					name: "Daniel Mendoza Q.",
+					email: "daniel@email.com",
+					phone: "6666-6666",
+					address: "Cahuita, Limón"
+				}
+			],
+
+			contactDeleted: null,
+			showModal: false,
 		},
+
 		actions: {
-			getContacts : async()=>{
-				try {
-					
-					const response = await fetch("https://playground.4geeks.com/apis/fake/contact/agenda/Jparedes");
-					// Verificar si la respuesta está en el rango de 200-299 (éxito)
-					if (!response.ok) {
-					  throw new Error('La solicitud no fue exitosa');
-					}
-				
-					// Analizar la respuesta como JSON y devolver los datos
-					const contacts = await response.json();
-					setStore({contacts});
-				  } catch (error) {
-					// Manejar errores
-					console.error('Error al obtener los datos:', error.message);
-					throw error;
-				  }
-			},
 
-			addContacts: async(newContact)=>{
-				
-				try {
-					// Realizar la solicitud Post usando 
-					
-		 		 	const requestOptions = {
-					method: 'POST',
-					headers: {
-					'Content-Type': 'application/json', // Indicamos que el cuerpo de la solicitud es JSON
-					 'Accept' : 'application/json',
-					},
-					body: JSON.stringify(newContact), // Convertimos el objeto a JSON y lo enviamos como cuerpo de la solicitud
-		  			};
-		 		 	const response = await fetch( "https://playground.4geeks.com/apis/fake/contact/",requestOptions);
-					
-					// Verificar si la respuesta está en el rango de 200-299 (éxito)
-					if (!response.ok) {
-					  throw new Error('La solicitud no fue exitosa');
-					}
-					else{
-					// Analizar la respuesta como JSON y devolver los datos
-					const contacts = getActions().getContacts();
-					setStore({contacts});
-					}
+				// Adding new contact to the list
+				addContact: (contact) =>{
+					// Get from store
+					let contactList = getStore().contacts;
+					const newContact = {id: contactList.length +1, ...contact};
+					// Adds one more contact to the list
+					setStore({ contacts: [...contactList, newContact]});
+				},
 
-				  } catch (error) {
-					// Manejar errores
-					console.error('Error al obtener los datos:', error.message);
-					throw error;
-				  }
-			},
-			
-			editContacts: async(editContact,id)=>{
-				try {
-					// Realizar la solicitud POST usando fetch
-					const requestOptions = {
-					  method: 'PUT',
-					  body : JSON.stringify(editContact),
-					  headers: {
-						'Content-Type': 'application/json', // Indicamos que el cuerpo de la solicitud es JSON
-					  },
-					};
-					const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`,requestOptions);
-					// Verificar si la respuesta está en el rango de 200-299 (éxito)
-					if (!response.ok) {
-					  throw new Error('La solicitud no fue exitosa');
+				// Check empty fields in input form when adding
+				checkFormFields: (newContact) =>{
+					const {name, email, phone, address} = newContact
+					if (name && email && phone && address) {
+						getActions().addContact(newContact);
 					}
-					else{
-					// Analizar la respuesta como JSON y devolver los datos
-					const contacts = getActions().getContacts();
-					setStore({contacts});
-					}
+				},
 
-				  } catch (error) {
-					// Manejar errores
-					console.error('Error al obtener los datos:', error.message);
-					throw error;
-				  }
-			},
-
-			deleteContacts: async(id)=>{
-				try {
-					// Realizar la solicitud POST usando fetch
-					const requestOptions = {
-					  method: 'DELETE',
-					  headers: {
-						'Content-Type': 'application/json', // Indicamos que el cuerpo de la solicitud es JSON
-					  },
-					};
-					const response = await fetch(`https://playground.4geeks.com/apis/fake/contact/${id}`,requestOptions);
-					// Verificar si la respuesta está en el rango de 200-299 (éxito)
-					if (!response.ok) {
-					  throw new Error('La solicitud no fue exitosa');
+				// Editing contact from the list
+				editContact: (id, editedContact) =>{
+					// Get from store
+					let contactList = getStore().contacts;
+					// Find contact index and update
+					const contactIndex = contactList.findIndex(contact => contact.id === id);
+					if (contactIndex !== -1){
+						const editedContacts = [...contactList];
+						editedContacts[contactIndex] = {id, ...editedContact};
+						setStore({ contacts: editedContacts});
 					}
-					else{
-					// Analizar la respuesta como JSON y devolver los datos
-					const contacts = getActions().getContacts();
-					setStore({contacts});
-					}
+				},
 
-				  } catch (error) {
-					// Manejar errores
-					console.error('Error al obtener los datos:', error.message);
-					throw error;
-				  }
-			},
-			// Use getActions to call a function within a fuction
+
+				// Deleting contact
+				deleteContact: (contact) =>{
+					// Get from store
+					let contactList = getStore().contacts;
+					// Keep all except current id
+					setStore({contacts: contactList.filter((item) => item !== contact)})
+					getActions().closeDeleteModal();
+				},
 			exampleFunction: () => {
 				getActions().changeColor(0, "green");
 			},
